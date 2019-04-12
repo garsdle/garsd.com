@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>CONWAY 3d?</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+		    body {
+					color: #000;
+					font-family:Monospace;
+					font-size:13px;
+					text-align:center;
+					font-weight: bold;
+	
+					background-color: #000;
+					margin: 0px;
+					overflow: hidden;
+			    }
+	
+			    #info {
+						color:#fff;
+						position: absolute;
+						top: 0px; width: 100%;
+						padding: 5px;
+	
+			    }
+
+		</style>
+		<script type="text/javascript"> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-11405834-3']); _gaq.push(['_setDomainName', 'garsd.com']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script> 
+	</head>
+	<body>
+		<div id="container"></div>
+		<div id="info">
+			Move mouse &amp; press (A) to rotate and (S) zoom.
+		</div>
+		<script src="Three.js"></script>
+		<script src="Detector.js"></script>
+		<script src="Stats.js"></script>
+		<script type="text/javascript">
+				window.addEventListener('DOMMouseScroll', mousewheel, false);
+				window.addEventListener('mousewheel', mousewheel, false);
+				
+				if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+				var container, stats;
+				
+		    var camera, scene, renderer,
+		    geometry, material, cube;
+		    	
+		    var xCubeNum=50;
+		    var yCubeNum=50;
+		    var zCubeNum=1;
+		    var cubeWidth=100;
+				
+				var cubes=new Array();
+				for (i=0;i<xCubeNum;i++)
+	    	{
+	    		cubes[i]=new Array();
+	    		for (j=0;j<yCubeNum;j++)
+	    		{
+	    			cubes[i][j]=new Array();
+						for (k=0;k<zCubeNum;k++)
+	    			{
+	    				cubes[i][j][k]=false;
+						}
+					}
+				}
+				
+				var cubesNext=new Array();
+		    for (i=0;i<xCubeNum;i++)
+	    	{
+	    		cubesNext[i]=new Array();
+	    		for (j=0;j<yCubeNum;j++)
+	    		{
+	    			cubesNext[i][j]=new Array();
+						for (k=0;k<zCubeNum;k++)
+	    			{
+	    				cubesNext[i][j][k]=false;
+						}
+					}
+				}
+				
+		    init();
+		    animate();
+				
+				function mousewheel(event) 
+				{
+						camera.position.z+=event.wheelDeltaY;
+				}
+				
+		    function init() 
+		    {
+		
+		        scene = new THREE.Scene();
+		        camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 1, 20000 );
+		        camera.position.z = 2000;		       
+            camera.position.y = 2000;
+            camera.position.x = 2000;
+						
+						
+						controls = new THREE.TrackballControls( camera, document );
+						controls.zoomSpeed =.8;  
+						controls.panSpeed = 0.8;  
+						controls.noZoom = false;  
+						controls.noPan = true;
+						controls.noRotate=false;  
+						controls.dynamicDampingFactor=.1;
+						controls.keys = [ 65, 83, 68 ];
+		       	populate();
+		        
+						scene.add( camera );
+						
+						 // create a point light
+						var pointLight =
+						new THREE.PointLight(0xFFFFFF);
+						
+						// set its position
+						pointLight.position.x = 1000;
+						pointLight.position.y = 500;
+						pointLight.position.z = 130;
+						
+						// add to the scene
+						scene.add(pointLight);
+
+		        //renderer = new THREE.WebGLRenderer();
+		        renderer = new THREE.CanvasRenderer();
+
+		        renderer.setSize( window.innerWidth, window.innerHeight );
+		        document.body.appendChild( renderer.domElement );
+		        
+		        stats = new Stats();
+						stats.domElement.style.position = 'absolute';
+						stats.domElement.style.top = '0px';
+						stats.domElement.style.zIndex = 100;
+						document.body.appendChild( stats.domElement );
+		
+		    }
+				
+				function populate()
+		    {
+		    	for (i=0;i<xCubeNum;i++)
+		    	{
+		    		for (j=0;j<yCubeNum;j++)
+		    		{
+							for (k=0;k<zCubeNum;k++)
+		    			{
+								if(Math.random()>.5)
+								{
+									geometry = new THREE.CubeGeometry( cubeWidth, cubeWidth, cubeWidth );
+									material = new THREE.MeshBasicMaterial( { color: '0xffffff', transparent:true, wireframe: false, opacity:.8 } );
+									cube = new THREE.Mesh( geometry, material );
+									cube.position.x=cubeWidth*i-(xCubeNum*cubeWidth/2);
+									cube.position.y=cubeWidth*j-(yCubeNum*cubeWidth/2);
+									cube.position.z=cubeWidth*k-(zCubeNum*cubeWidth/2);
+									cubes[i][j][k]=cube;
+									scene.add( cube );
+								}
+							}
+						}
+					}
+				}
+				
+		    function animate() 
+		    {
+		    							
+	        requestAnimationFrame( animate );
+	        render();
+		
+		    }
+		    
+				setInterval( function () {
+
+    		requestAnimationFrame( step );
+
+				}, 8000 / 60 );
+				
+				function step()
+				{
+					//cubesNext=new Array();
+	        for (i=0;i<xCubeNum;i++)
+	        {
+	        	//cubesNext[i]=new Array();
+		    		for (j=0;j<yCubeNum;j++)
+						{
+							//cubesNext[i][j]=new Array();
+							
+							for (k=0;k<zCubeNum;k++)
+							{
+								cubesNext[i][j][k]=false;
+		
+								//Check for neighbors accounting for edges n stuff
+								var numLiveNeighbors=0;
+								for(ni=-1;ni<=1;ni++)
+									for(nj=-1;nj<=1;nj++)
+										for(nk=-1;nk<=1;nk++)
+											if(cubes[i-ni]!=undefined && cubes[i-ni][j-nj] !=undefined && cubes[i-ni][j-nj][k-nk]!=undefined)
+												if(!(ni == 0 && nj == 0 && nk == 0))
+													if (cubes[i-ni][j-nj][k-nk])
+														numLiveNeighbors++;
+								
+								//3,4,5
+								//3,4,6 oscillators
+								//3,6,6
+								if(cubes[i][j][k] && (numLiveNeighbors<2 || numLiveNeighbors>3	) )
+								{
+									//console.log("death!");
+									scene.remove(cubes[i][j][k]);
+									cubesNext[i][j][k]=false;
+								}
+								else if(cubes[i][j][k])
+									cubesNext[i][j][k]=cubes[i][j][k];
+									
+								else if(!cubes[i][j][k] && (numLiveNeighbors==3))
+								{
+									geometry = new THREE.CubeGeometry( cubeWidth, cubeWidth, cubeWidth );
+									//material = new THREE.MeshBasicMaterial( { color: '0x'+Math.floor(Math.random()*16777215).toString(16), wireframe: false, opacity:.8 } );
+									material = new THREE.MeshBasicMaterial( { color: '0xffffff', transparent:true, wireframe: false, opacity:.8 } );
+
+									cube = new THREE.Mesh( geometry, material );
+									cube.position.x=cubeWidth*i-(xCubeNum*cubeWidth/2);
+									cube.position.y=cubeWidth*j-(yCubeNum*cubeWidth/2);
+									cube.position.z=cubeWidth*k-(zCubeNum*cubeWidth/2);
+									cubesNext[i][j][k]=cube;
+									scene.add( cube );
+								}
+							}
+						}
+					}
+					
+					for (i=0;i<xCubeNum;i++)
+	        {
+	        	//cubesNext[i]=new Array();
+		    		for (j=0;j<yCubeNum;j++)
+						{
+							//cubesNext[i][j]=new Array();
+							
+							for (k=0;k<zCubeNum;k++)
+							{
+								if (!cubesNext[i][j][k])
+								{
+									delete cubes[i][j][k];
+									cubes[i][j][k]=false;
+								}
+								else
+									cubes[i][j][k]=cubesNext[i][j][k];
+							}
+						}
+					}
+
+				}
+
+				
+		    function render() 
+		    {
+						
+						controls.update();
+						stats.update();
+		        renderer.render( scene, camera );
+		
+		    }
+		
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

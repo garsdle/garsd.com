@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title></title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script type="text/javascript"> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-11405834-3']); _gaq.push(['_setDomainName', 'garsd.com']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script> 
+
+</head>
+<body>
+	<script type="text/javascript">
+		if (document.createElement("input").webkitSpeech === undefined) 
+    	alert("Speech input is not supported in your browser making this demo rather boring.");
+    
+		function parseCommand() 
+		{
+			var text=$('#voiceText').val();
+			var on;
+			var off;
+			
+			if (text.indexOf(" on")!=-1)
+				on=true;
+			else if (text.indexOf(" off ")!=-1)
+				off=true
+				
+			if (text.indexOf("displays")!=-1)
+				if (on)
+					alert("turning displays on");
+				else if (off)
+					alert("turning displays off");
+				else
+					alert("not sure what to do")
+					
+				
+		}
+  	
+	</script>
+	<input type="text" id="voiceText" speech="speech" x-webkit-speech="x-webkit-speech" onspeechchange="parseCommand();" onwebkitspeechchange="parseCommand();" />  
+</body>
+</html>

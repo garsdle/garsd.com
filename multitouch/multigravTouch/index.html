@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MultiGav</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+<style type="text/css">
+body { margin: 0px; overflow: hidden; }
+canvas { border: 1px solid black; }
+</style>
+<script type="text/javascript" src="bird.js"></script>
+<script type="text/javascript">
+
+var canvas;
+var ctx;
+var w = 0;
+var h = 0;
+
+var timer;
+var updateStarted = false;
+var touches = [];
+var birdArray=new Array();
+var numberOfbirds=500;
+
+function ol() {
+	canvas = document.getElementById('canvas');
+	ctx = canvas.getContext('2d');
+	timer = setInterval(update, 15);
+
+	canvas.addEventListener('click', function(e) {
+		ctx.clearRect(0, 0, w, h);
+
+	    // Not touch enabled (get cursor position from single event)
+	    var p = getCoords(e);
+
+		touches[0]= new Array();
+		touches[0].pageX=p.x;
+		touches[0].pageY=p.y;
+	        // ... Do something with cursor point p
+	    
+	
+	    return false;
+	});
+
+	canvas.addEventListener('touchend', function() {
+		ctx.clearRect(0, 0, w, h);
+	});
+	
+	canvas.addEventListener('touchmove', function(event) {
+	  event.preventDefault();
+	  touches = event.touches;
+	});
+	
+	canvas.addEventListener('touchstart', function(event) {
+	  console.log('start');
+	});
+	
+	for(var i=0;i<numberOfbirds;i++)
+	{
+		birdArray[i]=new bird();
+		birdArray[i].x=Math.random()*window.innerWidth;
+		birdArray[i].y=Math.random()*window.innerHeight;
+		birdArray[i].vx=1-2*Math.random();
+		birdArray[i].vy=1-2*Math.random();
+		birdArray[i].r=3;
+		birdArray[i].color='#'+Math.floor(Math.random()*16777215).toString(16);
+	}
+	
+};
+
+function update() {
+	if (updateStarted) return;
+	updateStarted = true;
+
+	var nw = window.innerWidth;
+	var nh = window.innerHeight;
+
+	if ((w != nw) || (h != nh)) {
+		w = nw;
+		h = nh;
+		canvas.style.width = w+'px';
+		canvas.style.height = h+'px';
+		canvas.width = w;
+		canvas.height = h;
+	}
+
+	ctx.clearRect(0, 0, w, h);
+
+	for(var i in birdArray)//The next two for loops must be parallel
+	{
+		checkDistance(i);
+	}
+	
+	for(var i in birdArray)
+	{
+		
+		moveBird(birdArray[i]);
+		drawBird(birdArray[i]);
+	}
+
+
+	var i, len = touches.length;
+	for (i=0; i<len; i++) {
+		var touch = touches[i];
+    var px = touch.pageX;
+    var py = touch.pageY;
+
+		ctx.beginPath();
+		ctx.arc(px, py, 20, 0, 2*Math.PI, true);
+
+		ctx.fillStyle = "rgba(240, 240, 255, 1)";
+		ctx.fill();
+
+		//ctx.lineWidth = 2.0;
+		//ctx.strokeStyle = "rgba(0, 0, 10, 0.8)";
+		//ctx.stroke();
+    //console.log('drawn circle at ' + px +',' + py);
+	}
+
+	updateStarted = false;
+}
+
+function checkDistance(j)
+{	
+	var length = touches.length;
+	
+	for(var i=0;i<length; i++)
+	{
+		if(i!=j)
+		{
+			var xDiff=birdArray[j].x-touches[i].pageX;
+			var yDiff=birdArray[j].y-touches[i].pageY;
+			var distance=Math.sqrt( xDiff*xDiff + yDiff*yDiff);
+		
+			if (distance<=20+birdArray[j].r)
+			{
+					birdArray[j].vx=0;
+					birdArray[j].vy=0;
+					
+				/*
+ctx.beginPath();
+				ctx.moveTo(birdArray[j].x,birdArray[j].y);
+				ctx.lineTo(touches[i].pageX,touches[i].pageY);
+				ctx.strokeStyle = "rgba(250, 180, 100, .6)";
+				ctx.stroke();
+				ctx.closePath();
+*/
+			}
+			else if (distance<=20+birdArray[j].r+20000)
+			{
+				if (xDiff<0)
+					birdArray[j].vx+=(10/distance);
+				else if (xDiff>0)
+					birdArray[j].vx-=(10/distance);
+					
+				if (yDiff<0)
+					birdArray[j].vy+=(10/distance);
+				else if (yDiff>0)
+					birdArray[j].vy-=(10/distance);
+					
+		/*
+		ctx.beginPath();
+				ctx.moveTo(birdArray[j].x,birdArray[j].y);
+				ctx.lineTo(touches[i].pageX,touches[i].pageY); 
+				ctx.strokeStyle = "rgba(180, 130, 200, .6)";
+				ctx.stroke();
+				ctx.closePath();
+*/
+			}
+			
+			
+		}
+		
+	}
+
+} 
+
+function moveBird(bird)
+{
+	
+	//if (bird.vx>-2 && bird.vx<2)
+		bird.x+=bird.vx;
+	//if (bird.vy>-2 && bird.vy<2)
+		bird.y+=bird.vy;
+	
+	/////PHYSICAL BOUNDARIES
+	/*
+if (bird.y>=canvas.height)
+		bird.y=0;
+	else if (bird.y<0)
+		bird.y=canvas.height;
+		
+	if (bird.x>=canvas.width)
+		bird.x=0;
+	else if (bird.x<0)
+		bird.x=canvas.width;
+*/
+}
+
+function drawBird(bird)
+{
+	//displayText(bird);
+	ctx.fillStyle = bird.color;
+	ctx.beginPath();
+	ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI*2, true); 
+	ctx.closePath();
+	ctx.fill();
+}
+
+function getCoords(e) 
+{
+    if (e.offsetX) 
+    {
+        // Works in Chrome / Safari (except on iPad/iPhone)
+        return { x: e.offsetX, y: e.offsetY };
+    }
+    else if (e.layerX) 
+    {
+        // Works in Firefox
+        return { x: e.layerX, y: e.layerY };
+    }
+    else 
+    {
+        // Works in Safari on iPad/iPhone
+        return { x: e.pageX - cb_canvas.offsetLeft, y: e.pageY - cb_canvas.offsetTop };
+    }
+}
+
+
+</script>
+<script type="text/javascript"> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-11405834-3']); _gaq.push(['_setDomainName', 'garsd.com']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script> 
+
+</head>
+<body onload="ol()">
+
+<canvas id="canvas" width="300" height="300" style="top:0px; left:0px; width: 300px; height: 300px;"></canvas>
+
+</body>
+</html>
