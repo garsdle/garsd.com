@@ -113,7 +113,7 @@ function tick()
 			}
 			
 			organismArray[i][j].think();       //Let it think!
-			organismArray[i][j].r-=Math.abs(organismArray[i][j].vx+organismArray[i][j].vy)/(1000/speed);
+			organismArray[i][j].r-=Math.abs(organismArray[i][j].vx+organismArray[i][j].vy)/(10000/speed);
 			
 
 			
