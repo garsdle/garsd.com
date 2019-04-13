@@ -78,8 +78,8 @@ function init_world()
 		//plantArray[i].r=1;
 	}	
 	
-	cheekyArray["eats"]=new Array(omniArray);
-	omniArray["eats"]=new Array(cowArray, plantArray);
+	cheekyArray["eats"]=new Array(omniArray, cheekyArray);
+	omniArray["eats"]=new Array(cowArray);
 	wolfArray["eats"]=new Array(cowArray);
 	cowArray["eats"]=new Array(plantArray);
 }
