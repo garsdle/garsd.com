@@ -10,7 +10,7 @@ var plantArray=new Array();
 var maxPlants=140;
 
 var organismArray=new Array();
-var speed=0.1; //1-10, 10 being the fastest
+var speed=1; //1-10, 10 being the fastest
 var sizeRatio=.3; //Size of the world
 
 function init() 
@@ -23,7 +23,7 @@ function init()
 	canvas.style.backgroundColor = "#000000";
 
 	init_world();
-	return setInterval(tick, 50/speed);
+	return setInterval(tick, 500/speed);
 }
 
 function init_world()
