@@ -32,7 +32,7 @@ function init_world()
 	/////Cheeky	///////////////////////////////
 	cheeky.prototype=new organism();
 	cheekyArray["max"]=1000;
-	for(var i=0;i<10;i++)
+	for(var i=0;i<5;i++)
 	{
 		cheeky.prototype=new organism();
 		cheekyArray[i]=new cheeky();	
@@ -42,7 +42,7 @@ function init_world()
 	/////OMNI	///////////////////////////////
 	omni.prototype=new organism();
 	omniArray["max"]=1000;
-	for(var i=0;i<20;i++)
+	for(var i=0;i<10;i++)
 	{
 		omni.prototype=new organism();
 		omniArray[i]=new omni();	
@@ -53,7 +53,7 @@ function init_world()
 	/////WOLVES	///////////////////////////////
 	wolf.prototype=new organism();
 	wolfArray["max"]=1000;
-	for(var i=0;i<20;i++)
+	for(var i=0;i<30;i++)
 	{
 		wolf.prototype=new organism();
 		wolfArray[i]=new wolf();	
@@ -63,7 +63,7 @@ function init_world()
 
 	/////COWS/////////////////////////////////
 	cowArray["max"]=1000;
-	for(var i=0;i<40;i++)
+	for(var i=0;i<60;i++)
 	{
 		cow.prototype=new organism();
 		cowArray[i]=new cow();
