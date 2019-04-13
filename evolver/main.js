@@ -78,9 +78,9 @@ function init_world()
 		//plantArray[i].r=1;
 	}	
 	
-	cheekyArray["eats"]=new Array(wolfArray);
-	wolfArray["eats"]=new Array(omniArray);
-	omniArray["eats"]=new Array(cowArray);
+	cheekyArray["eats"]=new Array(omniArray);
+	omniArray["eats"]=new Array(wolfArray);
+	wolfArray["eats"]=new Array(cowArray);
 	cowArray["eats"]=new Array(plantArray);
 }
 
@@ -240,7 +240,7 @@ function checkCollision(a,bArray)
 			//it is edible
 			if(a.hungry)
 			{
-		 		a.r+=.6;
+		 		a.r+=.3;
 		 		bArray[i].r--;
 		 		if (bArray[i].r<1)
 				{
