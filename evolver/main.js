@@ -107,7 +107,7 @@ function tick()
 				var temp=organismArray[i][j].birth();
 				temp.x=organismArray[i][j].x;
 				temp.y=organismArray[i][j].y;
-				temp.r=0.1;
+				temp.r=5;
 				organismArray[i][j].r*=0.6;
 				organismArray[i].push(temp);
 			}
