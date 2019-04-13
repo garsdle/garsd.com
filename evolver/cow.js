@@ -18,7 +18,7 @@ function cow()
 			this.hungry=false
 	
 		////Check if birth ready
-		if (this.age>50 && this.r>10)
+		if (this.age>5000 && this.r>10)
 			this.readyToBirth=true;
 		else
 			this.readyToBirth=false;
