@@ -240,7 +240,7 @@ function checkCollision(a,bArray)
 			//it is edible
 			if(a.hungry)
 			{
-		 		a.r+=.3;
+		 		a.r+=.6;
 		 		bArray[i].r--;
 		 		if (bArray[i].r<1)
 				{
