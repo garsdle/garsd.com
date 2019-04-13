@@ -13,6 +13,9 @@ var organismArray=new Array();
 var speed=1; //1-10, 10 being the fastest
 var sizeRatio=.3; //Size of the world
 
+var collisionResetValue = 50*speed;
+var collisionCountdown = collisionResetValue;
+
 function init() 
 {
 	canvas = document.getElementById("full");
@@ -23,7 +26,7 @@ function init()
 	canvas.style.backgroundColor = "#000000";
 
 	init_world();
-	return setInterval(tick, 500/speed);
+	return setInterval(tick, 50/speed);
 }
 
 function init_world()
@@ -88,6 +91,12 @@ function tick()
 {	
 	clear();
 	
+	var checkCollision = false
+	if (collisionCountdown == 0) {
+		checkCollision = true;
+		collisionCountdown = collisionResetValue;
+	}
+	
 	for (var i in organismArray)
 	{
 		var length=organismArray[i].length;
@@ -120,9 +129,11 @@ function tick()
 			moveOrganism(organismArray[i][j]);
 			
 			organismArray[i][j].nearby=new Array();
-			for (var k in organismArray[i]["eats"])
-				checkCollision(organismArray[i][j],organismArray[i]["eats"][k]); //Check to see if collided. Also distances to other.
-				
+			if (checkCollision) {
+				for (var k in organismArray[i]["eats"])
+					checkCollision(organismArray[i][j],organismArray[i]["eats"][k]); //Check to see if collided. Also distances to other.
+			}
+			
 			drawOrganism(organismArray[i][j]);
 			
 			////Under fed organisms die :(
