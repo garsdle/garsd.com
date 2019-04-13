@@ -7,7 +7,7 @@ var wolfArray=new Array();
 var cowArray=new Array();
 
 var plantArray=new Array();
-var maxPlants=140;
+var maxPlants=200;
 
 var organismArray=new Array();
 var speed=1; //1-10, 10 being the fastest
@@ -31,7 +31,7 @@ function init_world()
 
 	/////Cheeky	///////////////////////////////
 	cheeky.prototype=new organism();
-	cheekyArray["max"]=100;
+	cheekyArray["max"]=1000;
 	for(var i=0;i<10;i++)
 	{
 		cheeky.prototype=new organism();
@@ -41,18 +41,18 @@ function init_world()
 	
 	/////OMNI	///////////////////////////////
 	omni.prototype=new organism();
-	omniArray["max"]=100;
+	omniArray["max"]=1000;
 	for(var i=0;i<20;i++)
 	{
 		omni.prototype=new organism();
 		omniArray[i]=new omni();	
 	}
-	organismArray.push(omniArray);
+// 	organismArray.push(omniArray);
 	
 	
 	/////WOLVES	///////////////////////////////
 	wolf.prototype=new organism();
-	wolfArray["max"]=100;
+	wolfArray["max"]=1000;
 	for(var i=0;i<20;i++)
 	{
 		wolf.prototype=new organism();
@@ -62,7 +62,7 @@ function init_world()
 
 
 	/////COWS/////////////////////////////////
-	cowArray["max"]=100;
+	cowArray["max"]=1000;
 	for(var i=0;i<40;i++)
 	{
 		cow.prototype=new organism();
@@ -177,7 +177,7 @@ function plantTick()
 		moveOrganism(plantArray[i]);
 		
 		///Plant grow
-		if (plantArray[i].age%10==0)
+		if (plantArray[i].age%20==0)
 			if(plantArray[i].r<10)
 				plantArray[i].r++;
 			
