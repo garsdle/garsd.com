@@ -78,8 +78,8 @@ function init_world()
 		//plantArray[i].r=1;
 	}	
 	
-	wolfArray["eats"]=new Array(cheekyArray);
-	cheekyArray["eats"]=new Array(omniArray);
+	cheekyArray["eats"]=new Array(wolfArray);
+	wolfArray["eats"]=new Array(omniArray);
 	omniArray["eats"]=new Array(cowArray);
 	cowArray["eats"]=new Array(plantArray);
 }
@@ -107,8 +107,8 @@ function tick()
 				var temp=organismArray[i][j].birth();
 				temp.x=organismArray[i][j].x;
 				temp.y=organismArray[i][j].y;
-				temp.r=(1-organismArray[i][j].birthR)*organismArray[i][j].r;
-				organismArray[i][j].r*=organismArray[i][j].birthR;
+				temp.r=0.1;
+				organismArray[i][j].r*=0.6;
 				organismArray[i].push(temp);
 			}
 			
@@ -177,7 +177,7 @@ function plantTick()
 		moveOrganism(plantArray[i]);
 		
 		///Plant grow
-		if (plantArray[i].age%20==0)
+		if (plantArray[i].age%10==0)
 			if(plantArray[i].r<10)
 				plantArray[i].r++;
 			
