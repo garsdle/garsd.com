@@ -30,14 +30,14 @@ function init_world()
 {	
 
 	/////Cheeky	///////////////////////////////
-// 	cheeky.prototype=new organism();
-// 	cheekyArray["max"]=1000;
-// 	for(var i=0;i<10;i++)
-// 	{
-// 		cheeky.prototype=new organism();
-// 		cheekyArray[i]=new cheeky();	
-// 	}
-// 	organismArray.push(cheekyArray);
+	cheeky.prototype=new organism();
+	cheekyArray["max"]=1000;
+	for(var i=0;i<10;i++)
+	{
+		cheeky.prototype=new organism();
+		cheekyArray[i]=new cheeky();	
+	}
+	organismArray.push(cheekyArray);
 	
 	/////OMNI	///////////////////////////////
 	omni.prototype=new organism();
@@ -78,8 +78,8 @@ function init_world()
 		//plantArray[i].r=1;
 	}	
 	
-// 	cheekyArray["eats"]=new Array(omniArray);
-	omniArray["eats"]=new Array(cowArray,plantArray);
+	cheekyArray["eats"]=new Array(plantArray);
+	omniArray["eats"]=new Array(cheekyArray);
 	wolfArray["eats"]=new Array(cowArray,omniArray);
 	cowArray["eats"]=new Array(plantArray);
 }
