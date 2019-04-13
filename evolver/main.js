@@ -100,7 +100,7 @@ function tick()
 			
 			
 			////Make some babies
-			f (organismArray[i][j].age>400 &&organismArray[i][j].r>10) {
+			if (organismArray[i][j].age>400 &&organismArray[i][j].r>10) {
 				organismArray[i][j].age=0;
 				
 				var temp=organismArray[i][j].birth();
